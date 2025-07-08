@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_reclamacao")
-public class reclamacaoModel {
+public class ReclamacaoModel {
 
     // atributos
     // chave primaria: id
@@ -41,7 +41,18 @@ public class reclamacaoModel {
     // no caso, usuário
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private usuarioModel usuario;
+    private UsuarioModel usuario;
+
+
+    
+    public ReclamacaoModel(UUID id, String titulo, String descricao, Date data, UsuarioModel usuario) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.data = data;
+        this.respondida = false;
+        this.usuario = usuario;
+    }
 
     // getters e setters
     public String getTitulo() {
@@ -76,16 +87,31 @@ public class reclamacaoModel {
         this.id = id;
     }
 
-    public usuarioModel getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(usuarioModel usuario) {
-        this.usuario = usuario;
-    }
-
     public String getCpfUsuario() {
     return this.usuario.getCpf();
 }
+
+    public boolean isRespondida() {
+        return respondida;
+    }
+
+    public void setRespondida(boolean respondida) {
+        this.respondida = respondida;
+    }
+
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
+    }
+
+    public ReclamacaoModel orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    }
+
+
 
 }

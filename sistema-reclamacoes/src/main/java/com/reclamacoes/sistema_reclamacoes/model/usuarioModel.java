@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_usuario")
-public class usuarioModel {
+public class UsuarioModel {
 
     //atributos/colunas da tabela
     @Id
@@ -34,7 +34,7 @@ public class usuarioModel {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     //carregamento "preguiçoso", pra não aparecer um monte de reclamação de uma vez
-    private Set<reclamacaoModel> reclamacoes = new HashSet<>();
+    private Set<ReclamacaoModel> reclamacoes = new HashSet<>();
 
     //getters e setters
     public UUID getId() {
@@ -61,11 +61,11 @@ public class usuarioModel {
         this.nome = nome;
     }
 
-    public Set<reclamacaoModel> getReclamacoes() {
+    public Set<ReclamacaoModel> getReclamacoes() {
         return reclamacoes;
     }
 
-    public void setReclamacoes(Set<reclamacaoModel> reclamacoes) {
+    public void setReclamacoes(Set<ReclamacaoModel> reclamacoes) {
         this.reclamacoes = reclamacoes;
     }
 
