@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +29,7 @@ public class ReclamacaoModel {
     private UUID id;
 
     //RF-02.2
-    @Column(nullable = false, unique = false, length = 100)
+    @Column(nullable = false, unique = true, length = 100)
     @NotBlank(message = "Título é obrigatório")
     @Size(max = 100, message = "Título deve ter até 100 caracteres")
     private String titulo;
@@ -50,6 +52,7 @@ public class ReclamacaoModel {
     // no caso, usuário
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+     @JsonBackReference
     private UsuarioModel usuario;
 
 

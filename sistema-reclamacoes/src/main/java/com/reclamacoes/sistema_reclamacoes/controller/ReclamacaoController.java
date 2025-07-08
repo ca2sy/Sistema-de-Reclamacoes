@@ -3,7 +3,6 @@ package com.reclamacoes.sistema_reclamacoes.controller;
 import com.reclamacoes.sistema_reclamacoes.model.ReclamacaoModel;
 import com.reclamacoes.sistema_reclamacoes.model.UsuarioModel;
 import com.reclamacoes.sistema_reclamacoes.repository.UsuarioRepository;
-import com.reclamacoes.sistema_reclamacoes.security.JwtUtil;
 import com.reclamacoes.sistema_reclamacoes.service.ReclamacaoService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +10,8 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,81 +24,87 @@ public class ReclamacaoController {
 
     @Autowired
     private ReclamacaoService reclamacaoService;
-    
+
     @Autowired
     private UsuarioRepository usuarioRepository;
-    
 
     @PostMapping
-    public ResponseEntity<?> criarReclamacao(
-            @Valid @RequestBody ReclamacaoModel reclamacao,
-            HttpServletRequest request) {
-        
+    public ResponseEntity<?> criarReclamacao(@Valid @RequestBody ReclamacaoModel reclamacao) {
         try {
-            String token = request.getHeader("Authorization").replace("Bearer ", "");
-            String cpf = JwtUtil.extractCpf(token);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            
+            if (authentication == null || authentication.getName() == null) {
+                return ResponseEntity.status(401).body("Token inválido ou expirado");
+            }
+            
+            String cpf = authentication.getName();
 
             UsuarioModel usuario = usuarioRepository.findByCpf(cpf)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-            
- 
+
             ReclamacaoModel novaReclamacao = reclamacaoService.criarReclamacao(reclamacao, usuario.getId());
-            
+
             return ResponseEntity.ok(novaReclamacao);
-            
+
         } catch (Exception e) {
-            return ResponseEntity.status(401).body("Acesso não autorizado: " + e.getMessage());
+            return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
-    public Optional<ReclamacaoModel> buscarReclamacaoPorId(@PathVariable UUID id) {
-        return reclamacaoService.buscarReclamacaoPorId(id);
+    public ResponseEntity<?> buscarReclamacaoPorId(@PathVariable UUID id) {
+        Optional<ReclamacaoModel> reclamacao = reclamacaoService.buscarReclamacaoPorId(id);
+        
+        if (reclamacao.isPresent()) {
+            return ResponseEntity.ok(reclamacao.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+    @GetMapping("/minhas-reclamacoes")
+    public ResponseEntity<?> listarReclamacoesDoUsuario() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String cpf = authentication.getName();
+            
+            UsuarioModel usuario = usuarioRepository.findByCpf(cpf)
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-@GetMapping("/minhas-reclamacoes") 
-public ResponseEntity<?> listarReclamacoesDoUsuario(HttpServletRequest request) {
-    try {
-     
-        String token = request.getHeader("Authorization").replace("Bearer ", "");
-        String cpf = JwtUtil.extractCpf(token);
-        UsuarioModel usuario = usuarioRepository.findByCpf(cpf)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+            List<ReclamacaoModel> reclamacoes = reclamacaoService.listarReclamacoesDoUsuario(usuario.getId());
+            return ResponseEntity.ok(reclamacoes);
 
-      
-        List<ReclamacaoModel> reclamacoes = reclamacaoService.listarReclamacoesDoUsuario(usuario.getId());
-        return ResponseEntity.ok(reclamacoes);
-
-    } catch (Exception e) {
-        return ResponseEntity.status(401).body("Acesso não autorizado");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
+        }
     }
-}
 
-@DeleteMapping("/{titulo}")
-public ResponseEntity<?> deletarReclamacao(
-        @PathVariable String titulo,
-        HttpServletRequest request) {
-    try {
-  
-        String token = request.getHeader("Authorization").replace("Bearer ", "");
-        String cpf = JwtUtil.extractCpf(token);
-        UsuarioModel usuario = usuarioRepository.findByCpf(cpf)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    @DeleteMapping("/{titulo}")
+    public ResponseEntity<?> deletarReclamacao(@PathVariable String titulo) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String cpf = authentication.getName();
+            
+            UsuarioModel usuario = usuarioRepository.findByCpf(cpf)
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        reclamacaoService.deletarReclamacaoDoUsuario(titulo, usuario.getId());
-        return ResponseEntity.ok().build();
+            reclamacaoService.deletarReclamacaoDoUsuario(titulo, usuario.getId());
+            return ResponseEntity.ok().build();
 
-    } catch (Exception e) {
-        return ResponseEntity.status(401).body("Acesso não autorizado: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro: " + e.getMessage());
+        }
     }
-}
-
 
     @PutMapping("/responder/{idReclamacao}/usuario/{usuarioId}")
-    public ReclamacaoModel marcarComoRespondida(
+    public ResponseEntity<?> marcarComoRespondida(
             @PathVariable UUID idReclamacao,
             @PathVariable UUID usuarioId) {
-        return reclamacaoService.marcarComoRespondida(idReclamacao, usuarioId);
+        try {
+            ReclamacaoModel reclamacao = reclamacaoService.marcarComoRespondida(idReclamacao, usuarioId);
+            return ResponseEntity.ok(reclamacao);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro: " + e.getMessage());
+        }
     }
 }

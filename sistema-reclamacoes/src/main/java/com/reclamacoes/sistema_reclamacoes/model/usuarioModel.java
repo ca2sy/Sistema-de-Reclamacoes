@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +32,7 @@ public class UsuarioModel {
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     //carregamento "preguiçoso", pra não aparecer um monte de reclamação de uma vez
+    @JsonManagedReference
     private Set<ReclamacaoModel> reclamacoes = new HashSet<>();
 
     @Column(nullable = false)

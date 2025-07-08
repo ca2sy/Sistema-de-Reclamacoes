@@ -16,6 +16,7 @@ private static final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256)
 
 
  public static String generateToken(String cpf){
+    System.out.println("Gerando token para CPF: " + cpf);
     return Jwts.builder()
     .setSubject(cpf)
     .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
