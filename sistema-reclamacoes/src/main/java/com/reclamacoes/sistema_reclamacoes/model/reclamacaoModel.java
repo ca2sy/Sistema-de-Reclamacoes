@@ -3,6 +3,8 @@ package com.reclamacoes.sistema_reclamacoes.model;
 import java.sql.Date;
 import java.util.UUID;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_reclamacao")
@@ -24,14 +28,19 @@ public class ReclamacaoModel {
 
     //RF-02.2
     @Column(nullable = false, unique = false, length = 100)
+    @NotBlank(message = "Título é obrigatório")
+    @Size(max = 100, message = "Título deve ter até 100 caracteres")
     private String titulo;
 
     //RF-02.3
+     @NotBlank(message = "Descrição é obrigatória")
+    @Size(max = 600, message = "Descrição deve ter até 600 caracteres")
     @Column(nullable = false, unique = false, length = 600)
     private String descricao;
 
     //RF-02.4
-    @Column(nullable = false, unique = false)
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
     private Date data;
 
     @Column(nullable = false, unique = false)
@@ -44,14 +53,7 @@ public class ReclamacaoModel {
     private UsuarioModel usuario;
 
 
-    
-    public ReclamacaoModel(UUID id, String titulo, String descricao, Date data, UsuarioModel usuario) {
-        this.id = id;
-        this.titulo = titulo;
-        this.descricao = descricao;
-        this.data = data;
-        this.respondida = false;
-        this.usuario = usuario;
+    public ReclamacaoModel() {
     }
 
     // getters e setters
@@ -69,14 +71,6 @@ public class ReclamacaoModel {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
     }
 
     public UUID getId() {
@@ -107,11 +101,9 @@ public class ReclamacaoModel {
         this.usuario = usuario;
     }
 
-    public ReclamacaoModel orElseThrow(Object object) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    public void setData(Date data) {
+        this.data = data;
     }
-
 
 
 }

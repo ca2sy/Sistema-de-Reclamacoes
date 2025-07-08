@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,15 +29,19 @@ public class UsuarioModel {
     @Column(nullable = false, unique = false)
     private String nome;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     //carregamento "preguiçoso", pra não aparecer um monte de reclamação de uma vez
     private Set<ReclamacaoModel> reclamacoes = new HashSet<>();
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String senha;
 
+    
+    public UsuarioModel(String cpf, String nome, String senhaCriptografada) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.senha = senhaCriptografada;
+    }
 
     //getters e setters
     public UUID getId() {
