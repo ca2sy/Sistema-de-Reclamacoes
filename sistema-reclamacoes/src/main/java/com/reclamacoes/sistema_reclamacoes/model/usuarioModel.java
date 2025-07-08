@@ -43,6 +43,8 @@ public class UsuarioModel {
         this.senha = senhaCriptografada;
     }
 
+    public UsuarioModel() {}  
+
     //getters e setters
     public UUID getId() {
         return id;

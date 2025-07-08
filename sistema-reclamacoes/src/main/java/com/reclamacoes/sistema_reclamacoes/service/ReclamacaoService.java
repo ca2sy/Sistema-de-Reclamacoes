@@ -50,7 +50,7 @@ public class ReclamacaoService {
      ReclamacaoModel reclamacao = reclamacaoRepository.findByTitulo(titulo)
             .orElseThrow(() -> new RuntimeException("Reclamação não encontrada"));
 
-    // Valida se o usuário é dono da reclamação
+   
     if (!reclamacao.getUsuario().getId().equals(idDoUsuario)) {
         throw new RuntimeException("Você não tem permissão para excluir esta reclamação");
     }
