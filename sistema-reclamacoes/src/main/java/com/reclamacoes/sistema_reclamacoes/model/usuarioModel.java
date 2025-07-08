@@ -36,6 +36,11 @@ public class UsuarioModel {
     //carregamento "preguiçoso", pra não aparecer um monte de reclamação de uma vez
     private Set<ReclamacaoModel> reclamacoes = new HashSet<>();
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
+    private String senha;
+
+
     //getters e setters
     public UUID getId() {
         return id;
@@ -67,6 +72,14 @@ public class UsuarioModel {
 
     public void setReclamacoes(Set<ReclamacaoModel> reclamacoes) {
         this.reclamacoes = reclamacoes;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 
