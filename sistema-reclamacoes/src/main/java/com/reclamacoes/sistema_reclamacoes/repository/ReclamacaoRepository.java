@@ -8,7 +8,7 @@ import com.reclamacoes.sistema_reclamacoes.model.reclamacaoModel;
 public interface ReclamacaoRepository extends JpaRepository<reclamacaoModel, UUID>{
  
 
-    //esse método lista as reclamações realizadas por um usuário específico RF-04
+    //RF-04:
       List<reclamacaoModel> findByUsuarioId(UUID usuarioId); 
     
 }

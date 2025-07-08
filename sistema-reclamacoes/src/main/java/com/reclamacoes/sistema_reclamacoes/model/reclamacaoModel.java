@@ -22,12 +22,15 @@ public class reclamacaoModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false, unique = false)
+    //RF-02.2
+    @Column(nullable = false, unique = false, length = 100)
     private String titulo;
 
-    @Column(nullable = false, unique = false)
+    //RF-02.3
+    @Column(nullable = false, unique = false, length = 600)
     private String descricao;
 
+    //RF-02.4
     @Column(nullable = false, unique = false)
     private Date data;
 
