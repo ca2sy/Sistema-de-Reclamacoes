@@ -5,7 +5,7 @@ import com.reclamacoes.sistema_reclamacoes.model.UsuarioModel;
 import com.reclamacoes.sistema_reclamacoes.repository.UsuarioRepository;
 import com.reclamacoes.sistema_reclamacoes.service.ReclamacaoService;
 
-import jakarta.servlet.http.HttpServletRequest;
+
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;

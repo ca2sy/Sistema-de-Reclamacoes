@@ -108,5 +108,8 @@ public class ReclamacaoModel {
         this.data = data;
     }
 
+    public Date getData() {
+        return data;
+    }
 
 }
