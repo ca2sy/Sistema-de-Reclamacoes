@@ -26,18 +26,18 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/registro")
-public ResponseEntity<?> register(@Valid @RequestBody UsuarioModel usuario) {
-    if(usuario.getCpf() == null || usuario.getSenha() == null) {
-        return ResponseEntity.badRequest().body("CPF e senha são obrigatórios");
+    public ResponseEntity<?> register(@Valid @RequestBody UsuarioModel usuario) {
+        if(usuario.getCpf() == null || usuario.getSenha() == null) {
+            return ResponseEntity.badRequest().body("CPF e senha são obrigatórios");
+        }
+        
+        UsuarioModel usuarioRegistrado = usuarioService.registrarUsuario(
+            usuario.getCpf(),
+            usuario.getNome(),
+            usuario.getSenha()
+        );
+        return ResponseEntity.ok(usuarioRegistrado);
     }
-    
-    UsuarioModel usuarioRegistrado = usuarioService.registrarUsuario(
-        usuario.getCpf(),
-        usuario.getNome(),
-        usuario.getSenha()
-    );
-    return ResponseEntity.ok(usuarioRegistrado);
-}
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
@@ -46,8 +46,8 @@ public ResponseEntity<?> register(@Valid @RequestBody UsuarioModel usuario) {
         if(usuario.isPresent() && 
            passwordEncoder.matches(request.get("senha"), usuario.get().getSenha())) {
             String token = JwtUtil.generateToken(usuario.get().getCpf());
-            return ResponseEntity.ok(Map.of("token", token));
+            return ResponseEntity.ok(Map.of("token", token)); 
         }
-        return ResponseEntity.status(401).body("Credenciais inválidas.");
+        return ResponseEntity.status(401).body("Senha ou cpf incorretos.");
     }
 }
