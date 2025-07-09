@@ -35,7 +35,7 @@ public class ReclamacaoModel {
     private String titulo;
 
     //RF-02.3
-    @NotBlank(message = "Descrição é obrigatória")
+     @NotBlank(message = "Descrição é obrigatória")
     @Size(max = 600, message = "Descrição deve ter até 600 caracteres")
     @Column(nullable = false, unique = false, length = 600)
     private String descricao;
