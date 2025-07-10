@@ -24,7 +24,7 @@ Depois, foquei na segurança, que precisava ser feita com JWT. Nunca tinha traba
 - [Passo a passo para configurar JWT no Spring (Medium)](https://medium.com/@felipeacelinoo/protegendo-sua-api-rest-com-spring-security-e-autenticando-usu%C3%A1rios-com-token-jwt-em-uma-aplica%C3%A7%C3%A3o-d70e5b0331f9)  
 - [Vídeo tutorial JWT Spring Boot](https://youtu.be/SqU9v_V32RA?si=zBngDMUyWFIbr3vK)  
 
-No começo, deu muitos erros — era a primeira vez mexendo com isso e mesmo com os vídeos, foi complicado. Continuei pesquisando e tentando corrigir, até que consegui resolver os problemas, que eram erros de digitação e configurações de autenticação. Acredito que aprendi bastante sobre autenticação, mas ainda quero reforçar o conceito com mais prática, pois ainda está muito raso na minha mente.
+No começo, deu muitos erros, era a primeira vez mexendo com isso e mesmo com os vídeos, foi complicado. Continuei pesquisando e tentando corrigir, até que consegui resolver os problemas, que eram erros de digitação e configurações de autenticação. Acredito que aprendi bastante sobre autenticação, mas ainda quero reforçar o conceito com mais prática, pois ainda está muito raso na minha mente.
 
 Após a concluir essa parte, passei a testar a API usando o Thunder Client no VS Code, e quando tudo funcionou, comecei a trabalhar no frontend.
 
