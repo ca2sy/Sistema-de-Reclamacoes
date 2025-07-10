@@ -37,12 +37,21 @@ export default function Reclamacoes() {
 
     fetchReclamacoes();
   }, [navigate]);
-
-  const handleDelete = async (id) => {
+const handleDelete = async (id) => {
   const token = localStorage.getItem("token");
+
+
+  const reclamacao = reclamacoes.find(r => r.id === id);
+  
+  if (reclamacao && reclamacao.respondida) {
+    alert("Não é possível excluir uma reclamação que já foi respondida.");
+    return;
+  }
 
   const confirmDelete = window.confirm("Tem certeza que deseja excluir essa reclamação?");
   if (!confirmDelete) return;
+
+  try {
     const response = await fetch(`http://localhost:8080/api/reclamacoes/${id}`, {
       method: "DELETE",
       headers: {
@@ -56,7 +65,10 @@ export default function Reclamacoes() {
       const errorData = await response.text();
       setError(`Erro ao excluir: ${response.status} - ${errorData}`);
     }
- 
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+    setError("Erro de conexão ao tentar excluir a reclamação");
+  }
 };
 
 
@@ -80,12 +92,14 @@ export default function Reclamacoes() {
               </span>
             </div>
             <div className="card-actions">
+              {/* RF-06*/}
               <button
                 className="detalhes-btn"
                 onClick={() => navigate("/reclamacoes/" + reclamacao.id)}
               >
                 Ver detalhes
               </button>
+               {/* RF-13*/}
               <button
                 className="excluir-btn"
                 onClick={() => handleDelete(reclamacao.id)}
