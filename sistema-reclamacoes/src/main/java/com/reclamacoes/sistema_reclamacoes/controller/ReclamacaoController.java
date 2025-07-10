@@ -79,20 +79,23 @@ public class ReclamacaoController {
         }
     }
 
-    @DeleteMapping("/{titulo}")
-    public ResponseEntity<?> deletarReclamacao(@PathVariable String titulo) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarReclamacao(@PathVariable UUID id) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String cpf = authentication.getName();
-            
+
             UsuarioModel usuario = usuarioRepository.findByCpf(cpf)
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-            reclamacaoService.deletarReclamacaoDoUsuario(titulo, usuario.getId());
-            return ResponseEntity.ok().build();
+            reclamacaoService.deletarReclamacaoDoUsuario(id, usuario.getId());
 
+            return ResponseEntity.noContent().build(); // 204 - sucesso sem conteúdo
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body("Erro: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Erro: " + e.getMessage());
+            return ResponseEntity.status(500).body("Erro interno no servidor: " + e.getMessage());
         }
     }
 

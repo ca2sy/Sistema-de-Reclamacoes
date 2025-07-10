@@ -91,3 +91,22 @@ h2 {
   color: red;
   font-weight: bold;
 }
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.excluir-btn {
+  background-color: #e74c3c;
+  border: none;
+  padding: 10px 16px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.excluir-btn:hover {
+  background-color: #c0392b;
+}

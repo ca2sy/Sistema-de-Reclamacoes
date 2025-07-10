@@ -45,22 +45,22 @@ public class ReclamacaoService {
         return reclamacaoRepository.findByUsuarioId(idDoUsuario);
     }
 
-    @Transactional
-    public void deletarReclamacaoDoUsuario(String titulo, UUID idDoUsuario) {
-     ReclamacaoModel reclamacao = reclamacaoRepository.findByTitulo(titulo)
-            .orElseThrow(() -> new RuntimeException("Reclamação não encontrada"));
+@Transactional
+public void deletarReclamacaoDoUsuario(UUID idReclamacao, UUID idDoUsuario) {
+    ReclamacaoModel reclamacao = reclamacaoRepository.findById(idReclamacao)
+        .orElseThrow(() -> new RuntimeException("Reclamação não encontrada"));
 
-   
     if (!reclamacao.getUsuario().getId().equals(idDoUsuario)) {
         throw new RuntimeException("Você não tem permissão para excluir esta reclamação");
     }
 
-        if (reclamacao.isRespondida()) {
-            throw new RuntimeException("Não é possível deletar uma reclamação respondida.");
-        }
-
-        reclamacaoRepository.delete(reclamacao);
+    if (reclamacao.isRespondida()) {
+        throw new RuntimeException("Não é possível deletar uma reclamação respondida.");
     }
+
+    reclamacaoRepository.delete(reclamacao);
+}
+
 
     @Transactional
     public ReclamacaoModel marcarComoRespondida(UUID idDaReclamacao, UUID idDoUsuario) {

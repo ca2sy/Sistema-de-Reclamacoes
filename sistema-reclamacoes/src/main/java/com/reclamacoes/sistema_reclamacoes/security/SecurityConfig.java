@@ -27,12 +27,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Adicionar CORS
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll() // Adicionar se suas rotas de auth são /api/auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permitir OPTIONS
+                .requestMatchers("/api/auth/**").permitAll() 
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
