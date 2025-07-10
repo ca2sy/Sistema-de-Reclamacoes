@@ -38,6 +38,6 @@ Gostaria de ter usado Tailwind CSS, mas ainda não aprendi esse conceito direito
 
 ## Considerações Finais
 
-Fiz de tudo para realizar, pesquisei bastante porque não gosto de entregar algo não funcional e adoro aprender e praticar. Geralmente não descanso enquanto não estiver tudo funcionando como deveria.
+Fiz de tudo para realizar, pesquisei bastante porque não gosto de entregar algo não funcional e adoro aprender e praticar. Geralmente não descanso enquanto não estiver tudo funcionando como deveria. Acredito que errei bastente, principalmente na parte de autenticação, pois ainda é um conceito novo e, além disso,também errei muito com o front, já que sou mais acostumada e apegada com backend. Porém, isso não significa que eu vá deixar front ou autenticação de lado, vou trabalhar para melhorar.
 
- Reconheço que ainda preciso praticar muito, muito mesmo, para conseguir programar de forma mais independente, mas acredito que isso vem com o tempo e a prática e eu não irei desistir até conseguir chegar onde eu pretendo.
+ Reconheço que ainda preciso praticar muito, muito mesmo, para conseguir programar de forma mais independente, mas acredito que isso vem com o tempo e a prática e eu não irei desistir até conseguir chegar onde eu pretendo. 
